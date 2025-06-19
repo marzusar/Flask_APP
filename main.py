@@ -49,11 +49,11 @@ def reg():
         else:       
             cursor = conn.cursor()
             insert_query = """
-                INSERT INTO public."users" (user_name, user_password, user_phone)
+                INSERT INTO public."userss" (user_name, user_password, user_phone)
                 VALUES (%s, %s, %s);
             """
             id = """
-                SELECT Max(id_user) FROM public."Users"
+                SELECT Max(id_user) FROM public."userss"
             """
             data = (name, email, password1)
             cursor.execute(insert_query, data)
