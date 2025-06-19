@@ -3,12 +3,24 @@ import os
 
 app = Flask(__name__)
 
+# Функция подключения к базе данных
+def get_db_connection():
+    conn = psycopg2.connect(
+        database="railway",
+        user="postgres",
+        password="pyRNQxCKBCrnUVoDjmshWSEAKIUPUiZL",
+        host="postgres.railway.internal",
+        port="5432"
+    )
+    return conn
 
+# Вывод главной страницы
 @app.route('/')
 def index1():
     return render_template('index.html')
-
-@app.route('/index', methods=['POST', 'GET']) # Вывод главной страницы
+    
+# Вывод главной страницы с методом POST
+@app.route('/index', methods=['POST', 'GET'])
 def index2():
     name = request.form['nameLogin']
     id = request.form['idLogin']
