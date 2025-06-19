@@ -45,7 +45,7 @@ def reg():
 
         if password1 != password2:
             flash (" Пароли не совпадают. ")
-            return redirect(url_for("reg"))  
+            return redirect(url_for("aut"))
         else:       
             cursor = conn.cursor()
             insert_query = """
