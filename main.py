@@ -1,19 +1,19 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
 import psycopg2
 import os
-from dotenv import load_dotenv
+
 
 app = Flask(__name__)
 
 # Функция подключения к базе данных
 def get_db_connection():
-    load_dotenv()
+    
     conn = psycopg2.connect(
-        database=os.getenv('POSTGRES_DB'),
-        user=os.getenv('PGUSER'),
-        password=os.getenv('PGPASSWORD'),
-        host=os.getenv('PGHOST'),
-        port=os.getenv('PGPORT')
+        database=os.environ["POSTGRES_DB"],
+        user=os.environ["PGUSER"],
+        password=os.environ["PGPASSWORD"],
+        host=os.environ["PGHOST"],
+        port=os.environ["PGPORT"]
     )
     return conn
 
