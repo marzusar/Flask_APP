@@ -1,0 +1,87 @@
+body{
+    background-color: #edede9;
+}
+/*HEADER*/
+.header{
+    background-color: #cccccb;
+
+    position:sticky;
+    
+    
+    
+    
+    -webkit-box-shadow: 0px 5px 25px rgba(0,0,0,0.15);
+        box-shadow: 0px 5px 25px rgba(0,0,0,0.15);
+}
+.logo{
+    padding: 10px 10px 0px;
+    width: 200px;
+}
+    .header_img{
+        height: 64px;
+        width: 64px;
+    }
+
+.acc{
+    width: 200px;
+    text-align: center;
+}
+    .but{
+        padding: 5px 7px;
+    }
+
+    .none{
+        display: none;
+    }
+
+.links{
+    
+    padding: 3px;
+    justify-content: center;
+}
+    .link{
+        padding:5px 7px;
+    }
+
+/*body*/
+
+.body{
+   padding: 0;
+}
+.h11{
+    text-align: center;
+}
+
+/*FORM*/
+/* Общие стили для формы */
+.form {
+  width: 300px; /* Или другая ширина, по вашему желанию */
+  margin: 20px auto; /* Центрирование по горизонтали */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #edede9; /* Легкий фон */
+  text-align: center;
+}
+
+/* Стили для элементов формы */
+.form_control {
+  display: block; /* Чтобы каждый элемент был на новой строке */
+  width: 100%; /* Занимаем всю ширину родителя */
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box; /* Чтобы padding и border не влияли на ширину */
+}
+/* Стили для placeholder (немного серее) */
+::placeholder {
+  color: #999;
+}
+
+/*Serch*/
+
+.serch{
+    width: 80%;
+}
