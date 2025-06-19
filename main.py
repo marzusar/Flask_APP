@@ -44,7 +44,7 @@ def reg():
         password2 = request.form['password2']
 
         if password1 != password2:
-            flash (" Пароли не совпадают. ")
+            
             return redirect(url_for("aut"))  
         else:       
             cursor = conn.cursor()
