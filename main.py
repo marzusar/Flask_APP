@@ -45,17 +45,17 @@ def reg():
 
         if password1 != password2:
             flash (" Пароли не совпадают. ")
-            return redirect(url_for("aut"))
+            return redirect(url_for("reg"))
         else:       
             cursor = conn.cursor()
             insert_query = """
-                INSERT INTO public."Users" (user_name, email, password, date_reg, id_role)
-                VALUES (%s, %s, %s, current_date, %s);
+                INSERT INTO public."userss" (user_name, user_password)
+                VALUES (%s, %s);
             """
             id = """
-                SELECT Max(id_user) FROM public."Users"
+                SELECT Max(id_user) FROM public."userss"
             """
-            data = (name, email, password1, 2)
+            data = (name, password1)
             cursor.execute(insert_query, data)
 
             # Committing the transaction
