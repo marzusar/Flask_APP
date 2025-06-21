@@ -6,7 +6,6 @@ import os
 app = Flask(__name__)
 app.secret_key = os.environ["SECRET_KEY"]
 
-
 # Функция подключения к базе данных
 def get_db_connection():
     
