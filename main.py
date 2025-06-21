@@ -101,7 +101,7 @@ def aut():
         cursor = conn.cursor()
 
         select_query = """
-        SELECT id FROM public."users" WHERE user_name = %s AND password = %s;
+        SELECT id FROM public."users" WHERE user_name = %s AND user_password = %s;
         """
         data = (name, password)
 
