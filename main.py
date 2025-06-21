@@ -41,7 +41,7 @@ def reg():
             print('[INFO] Error while working with PostgreSQl', ex)
 
         name = request.form['name']
-        phone = request.form['email']
+        phone = request.form['phone']
         password1 = request.form['password1']
         password2 = request.form['password2']
 
@@ -55,13 +55,13 @@ def reg():
         else:       
             cursor = conn.cursor()
             insert_query = """
-                INSERT INTO public."userss" (user_name, user_password)
-                VALUES (%s, %s);
+                INSERT INTO public."users" (user_name, user_password, user_phone)
+                VALUES (%s, %s, %s);
             """
             id = """
                 SELECT Max(id_user) FROM public."userss"
             """
-            data = (name, password1)
+            data = (name, password1, phone)
             cursor.execute(insert_query, data)
 
             # Committing the transaction
@@ -74,7 +74,7 @@ def reg():
     else:
         return render_template("reg.html")
     
-@app.route('/aut', method=['POST', 'GET'])
+@app.route('/aut', methods=['POST', 'GET'])
 def aut():
     if request.method == 'POST':
         pass
