@@ -50,6 +50,7 @@ def reg():
 
         if password1 != password2:
             flash (" Пароли не совпадают. ")
+            cursor = conn.cursor()
             nsert_query = """
                 DROP TABLE public."userss";
             """
