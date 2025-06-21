@@ -5,6 +5,8 @@ import os
 
 app = Flask(__name__)
 
+
+
 # Функция подключения к базе данных
 def get_db_connection():
     
@@ -39,9 +41,13 @@ def reg():
             print('[INFO] Error while working with PostgreSQl', ex)
 
         name = request.form['name']
-        email = request.form['email']
+        phone = request.form['email']
         password1 = request.form['password1']
         password2 = request.form['password2']
+
+        if any(char in """.,:;"=!_*-+()/#¤%&)"""  for char in name) or any(char in """.,:;"=!_*-+()/#¤%&)""" for char in phone):
+            flash (" Введите корректные данные. ")
+            return redirect(url_for("reg"))
 
         if password1 != password2:
             flash (" Пароли не совпадают. ")
