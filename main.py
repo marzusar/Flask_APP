@@ -20,6 +20,7 @@ def get_db_connection():
 
 # Вывод Главной страницы
 @app.route('/index', methods=['POST', 'GET'])
+@app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':
         name = request.form['nameLogin']
