@@ -18,19 +18,17 @@ def get_db_connection():
     )
     return conn
 
-# Вывод главной страницы
-@app.route('/')
-def index1():
-    return render_template('index.html')
-    
-# Вывод главной страницы с методом POST
+# Вывод Главной страницы
 @app.route('/index', methods=['POST', 'GET'])
-def index2():
-    name = request.form['nameLogin']
-    id = request.form['idLogin']
-    return render_template('index.html', name=name, id=id)
+def index():
+    if request.method == 'POST':
+        name = request.form['nameLogin']
+        id = request.form['idLogin']
+        return render_template('index.html', name=name, id=id)
+    else:
+        return render_template('index.html')
 
-
+#Вевеод страницы Регистрации
 @app.route('/reg', methods=['POST', 'GET'])
 def reg():
     if request.method == 'POST':
@@ -54,11 +52,11 @@ def reg():
         else:       
             cursor = conn.cursor()
             insert_query = """
-                INSERT INTO public."users" (user_name, user_password, user_phone)
-                VALUES (%s, %s, %s);
+                INSERT INTO public."users" (user_name, user_password, user_phone, data_add, id_role)
+                VALUES (%s, %s, %s, NOW(), 2);
             """
             id = """
-                SELECT Max(id_user) FROM public."userss"
+                SELECT Max(id_user) FROM public."users"
             """
             data = (name, password1, phone)
             cursor.execute(insert_query, data)
@@ -72,13 +70,44 @@ def reg():
             return render_template("index.html", name=name, id=id)
     else:
         return render_template("reg.html")
-    
+   
+#Вывод страници Авторизации
 @app.route('/aut', methods=['POST', 'GET'])
 def aut():
     if request.method == 'POST':
-        pass
+        try:
+            conn = get_db_connection()
+        except Exception as ex:
+            print('[INFO] Error while working with PostgreSQl', ex)
+
+        name = request.form['name']
+        password = request.form['password']
+
+        if any(char in """.,:;"=!_*-+()/#¤%&)"""  for char in name) or any(char in """.,:;"=!_*-+()/#¤%&)""" for char in password):
+            flash (" Введите корректные данные. ")
+            return redirect(url_for("reg"))
+
+        cursor = conn.cursor()
+
+        select_query = """
+        SELECT id FROM public."users" WHERE user_name = %s AND password = %s;
+        """
+        data = (name, password)
+
+        cursor.execute(select_query, data)    
+        user = cursor.fetchone()
+        
+        if not user:
+            flash("Такого пользователя нет. Пожалуйста, проверте введённые данные или зарегестрируйтесь.")
+            
+            return render_template('aut.html', flash=flash)
+        
+        else:
+            return render_template('index.html', name=name, id=id)
+       
     else:
-        return render_template("aut.html")
+        return render_template('aut.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
