@@ -86,6 +86,10 @@ body{
 /*LOGIN*/
 
 .conteiner{
-    border: 1px solid #ccc;
+    border: 1px solid #855f5f;
     border-radius: 5px;
 }
+    .conteiner_content{
+        border: 1px solid #000000;
+        border-radius: 5px;
+    }
