@@ -46,9 +46,19 @@ def reg():
         if any(char in """.,:;"=!_*-+()/#¤%&)"""  for char in name) or any(char in """.,:;"=!_*-+()/#¤%&)""" for char in phone):
             flash (" Введите корректные данные. ")
             return redirect(url_for("reg"))
+        
+        select_name = """
+                SELECT user_name FROM public."users"
+            """
+        data = (name, password1, phone)
+        selects_name = cursor.execute(select_name, data)
+        
 
         if password1 != password2:
             flash (" Пароли не совпадают. ")
+            return redirect(url_for("reg"))
+        elif selects_name:
+            flash (" Такое имя  уже существует. ")
             return redirect(url_for("reg"))
         else:       
             cursor = conn.cursor()
@@ -99,15 +109,17 @@ def aut():
         user = cursor.fetchone()
         
         if not user:
-            flash("Такого пользователя нет. Пожалуйста, проверте введённые данные или зарегестрируйтесь.")
-            
-            return render_template('aut.html', flash=flash)
-        
+            flash("Такого пользователя c таким именем или паролем не существует. Пожалуйста, проверте введённые данные или зарегестрируйтесь.")
+            return redirect(url_for("reg"))
         else:
             return render_template('index.html', name=name, id=id)
        
     else:
         return render_template('aut.html')
+
+
+
+
 
 
 if __name__ == '__main__':
