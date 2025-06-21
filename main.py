@@ -117,7 +117,12 @@ def aut():
     else:
         return render_template('aut.html')
 
+@app.route("/log")
+def login():
 
+    
+
+    return  render_template('login.html')
 
 
 
