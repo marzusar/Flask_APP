@@ -4,7 +4,7 @@ import os
 
 
 app = Flask(__name__)
-
+app.secret_key = os.environ["SECRET_KEY"]
 
 
 # Функция подключения к базе данных
@@ -51,17 +51,6 @@ def reg():
 
         if password1 != password2:
             flash (" Пароли не совпадают. ")
-            nsert_query = """
-                DROP TABLE public."userss";
-            """
-            cursor.execute(nsert_query)
-            nsert_query = """
-                DROP TABLE public."users";
-            """
-            cursor.execute(nsert_query)
-
-            # Committing the transaction
-            conn.commit()
             return redirect(url_for("reg"))
         else:       
             cursor = conn.cursor()
@@ -82,9 +71,15 @@ def reg():
             conn.close()
 
             return render_template("index.html", name=name, id=id)
-
     else:
         return render_template("reg.html")
+    
+@app.route('/aut', method=['POST', 'GET'])
+def aut():
+    if request.method == 'POST':
+        pass
+    else:
+        return render_template("aut.html")
 
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
