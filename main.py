@@ -130,20 +130,18 @@ def user():
     if request.method == 'POST':
         try:
             conn = get_db_connection()
-            cur = conn.cursor()
         except Exception as ex:
             print('[INFO] Error while working with PostgreSQl', ex)
-
+        cur = conn.cursor()
         name = request.form['nameLogin']
         id = request.form['idLogin']
 
-        select_img="""
+        select_img=f"""
         Select name_img for public."images" i
         left join public."users" u on i.id = u.id_img
-        where u.id = %s;
-        """
-        data =(id)        
-        cur.execute(select_img, data)
+        where u.id = {id};
+        """      
+        cur.execute(select_img)
 
         selects_img = cur.fetchall()
 
