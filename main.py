@@ -24,9 +24,20 @@ def get_db_connection():
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':
-        name = request.form['nameLogin']
-        id = request.form['idLogin']
-        return render_template('index.html', name=name)
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+        except Exception as ex:
+            print('[INFO] Error while working with PostgreSQl', ex)
+
+        id = id
+        cur.execute('''select name_img from public."images" 
+                    left join public."users" on public."images".id = public."users".id_img
+                    where public."users".id = {id};''')
+        name_img = cur.fetchall()
+        conn.close()
+        
+        return render_template('index.html', img=name_img)
     else:
         return render_template('index.html')
 
@@ -36,25 +47,25 @@ def reg():
     if request.method == 'POST':
         try:
             conn = get_db_connection()
+            cur = conn.cursor()
         except Exception as ex:
             print('[INFO] Error while working with PostgreSQl', ex)
-        cursor = conn.cursor()
 
         name = request.form['name']
         phone = request.form['phone']
         password1 = request.form['password1']
         password2 = request.form['password2']
 
-        if any(char in """.,:;"=!_*-+()/#¤%&)"""  for char in name) or any(char in """.,:;"=!_*-+()/#¤%&)""" for char in phone):
+        if any(char in """.,:;"=!_*-+()/#¤%&)"""  for char in name) or any(char in """.,:;"=!_*-+()/#¤%&)""" for char in phone) or any(char in """.,("';:=!'")""" for char in password1):
             flash (" Введите корректные данные. ")
             return redirect(url_for("reg"))
         
-        select_name = f"""
-                SELECT user_name FROM public."users" where user_name == "{name}";
-            """
-
-        cursor.execute(select_name)
-        select_name = cursor.fetchall()
+        # Проверка наличия введённого имени в базе данных
+        cur.execute ( f"""
+                SELECT user_name FROM public."users" 
+                where user_name = '{name}';
+            """)
+        select_name = cur.fetchall()
         
 
         if password1 != password2:
@@ -65,26 +76,22 @@ def reg():
             return redirect(url_for("reg"))
         else:       
            
-            insert_query = """
+            cur.execute(f'''
                 INSERT INTO public."users" (user_name, user_password, user_phone, data_add, id_role)
-                VALUES (%s, %s, %s, NOW(), 2);
-            """
-            data = (name, password1, phone)
-            cursor.execute(insert_query, data)
-
-            select_id = """
-                SELECT id FROM public."users" WHERE user_name = %s AND user_password = %s;
-            """
-            cursor.execute(select_id, data)
-            id = cursor.fetchall()
+                VALUES ('{name}', '{password1}', {phone}, NOW(), 2);
+            ''')
+            conn.commit()
+ 
+            # Ввод id пользователя
+            cur.execute(f"""
+                SELECT id FROM public."users" WHERE user_name = '{name}' AND user_password = '{password1}';
+            """)
+            id = cur.fetchall()
             
             # Committing the transaction
-            conn.commit()
-
-            cursor.close()
             conn.close()
 
-            return render_template("index.html", name=name, id=id)
+            return render_template("index.html", id=id)
     else:
         return render_template("reg.html")
    
@@ -94,6 +101,7 @@ def aut():
     if request.method == 'POST':
         try:
             conn = get_db_connection()
+            cur = conn.cursor()
         except Exception as ex:
             print('[INFO] Error while working with PostgreSQl', ex)
 
@@ -104,21 +112,17 @@ def aut():
             flash (" Введите корректные данные. ")
             return redirect(url_for("reg"))
 
-        cursor = conn.cursor()
-
-        select_query = """
-        SELECT id FROM public."users" WHERE user_name = %s AND user_password = %s;
-        """
-        data = (name, password)
-
-        cursor.execute(select_query, data)    
-        user = cursor.fetchone()
+        cur.execute(f"""
+        SELECT id FROM public."users" WHERE user_name = '{name}' AND user_password = '{password}';
+        """) 
+        id = cur.fetchone()
         
-        if not user:
+        if not id:
             flash("Такого пользователя c таким именем или паролем не существует. Пожалуйста, проверте введённые данные или зарегестрируйтесь.")
             return redirect(url_for("aut"))
+        
         else:
-            return render_template('index.html', name=name, id=user)
+            return render_template('index.html', id=id)
        
     else:
         return render_template('aut.html')
@@ -132,9 +136,36 @@ def user():
         except Exception as ex:
             print('[INFO] Error while working with PostgreSQl', ex)
 
-        id = request.form['idLogin']
+        id = id
 
-        return  render_template('user.html', id=id)
+        # Вывод названия изображения аватарки
+        cur.execute(f'''
+        select name_img from public."images"
+        join left public."users" on public."images".id = public."users".id_img
+        where public."users".id = {id};
+        ''')
+        ava = cur.fetchall()
+
+        # Вывод имя пользователя
+        cur.execute(f'''
+        select user_name from public."users"
+        where id = {id};
+        ''')
+        user_name = cur.fetchall()
+
+        # Вывод 
+        cur.execute(f'''
+        select data_add from public."users"
+        where id = {id};
+        ''')
+        data_add = cur.fetchall()
+
+        if ava:
+            ava+='.webp'
+            return  render_template('user.html', id=id, ava=ava, user_name=user_name, data_add=data_add)
+        elif not ava:
+            ava = 'default.webp'
+            return render_template('user.html',  id=id, ava=ava, user_name=user_name, data_add=data_add)
 
     else:
         return  render_template('user.html')
