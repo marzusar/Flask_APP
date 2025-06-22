@@ -76,7 +76,7 @@ def reg():
             select_id = """
                 SELECT id FROM public."users" WHERE user_name = %s AND user_password = %s;
             """
-            data = (name, password1, phone)
+            data = (name, password1)
             cursor.execute(select_id, data)
             id = cursor.fetchall()
             
