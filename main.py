@@ -130,8 +130,6 @@ def user():
     select_img="""
     Select 
     """
-    
-
     return  render_template('user.html', name=name)
 
 
