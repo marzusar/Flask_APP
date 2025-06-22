@@ -15,6 +15,7 @@ def get_db_connection():
         password=os.environ["PGPASSWORD"],
         host=os.environ["PGHOST"],
         port=os.environ["PGPORT"]
+        
     )
     return conn
 
