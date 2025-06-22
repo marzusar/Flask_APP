@@ -61,7 +61,7 @@ def reg():
                 SELECT user_name FROM public."users" 
                 where user_name = '{name}';
             """)
-        select_name = cur.fetchall()
+        select_name = cur.fetchone()
         
 
         if password1 != password2:
@@ -82,7 +82,7 @@ def reg():
             cur.execute(f"""
                 SELECT id FROM public."users" WHERE user_name = '{name}' AND user_password = '{password1}';
             """)
-            id = cur.fetchall()
+            id = cur.fetchone()
             
             
             cur.execute(f'''select name_img from public."images" 
@@ -90,14 +90,14 @@ def reg():
                         where public."users".id = {id};''')
             name_img = cur.fetchone()
             if not name_img:
-                img = 'default.webp'
+                ava = 'default.webp'
             elif name_img:
-                img = name_img[0]
-                img +='.webp'
+                ava= name_img[0]
+                ava +='.webp'
             conn.close()
             conn.close()
 
-            return render_template("index.html", img=img, id=id)
+            return render_template("index.html", ava=ava, id=id)
     else:
         return render_template("reg.html")
    
@@ -136,13 +136,13 @@ def aut():
                         where public."users".id = {id};''')
             name_img = cur.fetchone()
             if name_img:
-                img = name_img[0]+'.webp'
+                ava = name_img[0]+'.webp'
             elif not name_img:
-                img = 'default.webp'
+                ava = 'default.webp'
             conn.close()
             conn.close()
 
-            return render_template("index.html", img=img, id=id)       
+            return render_template("index.html", ava=ava, id=id)       
     else:
         return render_template('aut.html')
 
