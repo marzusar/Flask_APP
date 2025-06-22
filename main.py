@@ -88,11 +88,16 @@ def reg():
             cur.execute(f'''select name_img from public."images" 
                         left join public."users" on public."images".id = public."users".id_img
                         where public."users".id = {id};''')
-            name_img = cur.fetchall()
+            name_img = cur.fetchone()
+            if not name_img:
+                img = 'default.webp'
+            elif name_img:
+                img = name_img[0]
+                img +='.webp'
             conn.close()
             conn.close()
 
-            return render_template("index.html", name_img=name_img, id=id)
+            return render_template("index.html", img=img, id=id)
     else:
         return render_template("reg.html")
    
@@ -129,11 +134,16 @@ def aut():
             cur.execute(f'''select name_img from public."images" 
                         left join public."users" on public."images".id = public."users".id_img
                         where public."users".id = {id};''')
-            name_img = cur.fetchall()
+            name_img = cur.fetchone()
+            if not name_img:
+                img = 'default.webp'
+            elif name_img:
+                img = name_img[0]
+                img +='.webp'
             conn.close()
             conn.close()
 
-            return render_template("index.html", name_img=name_img, id=id)       
+            return render_template("index.html", img=img, id=id)       
     else:
         return render_template('aut.html')
 
