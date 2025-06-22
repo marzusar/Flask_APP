@@ -137,8 +137,8 @@ def user():
         id=1
 
         select_img=f"""
-        Select name_img for public."images" i
-        left join public."users" u on i.id = u.id_img
+        Select name_img for public."images" 
+        left join public."users" on public."images" .id = public."users".id_img
         where u.id = {id};
         """      
         cur.execute(select_img)
