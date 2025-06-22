@@ -145,11 +145,11 @@ def user():
         selects_img = cur.fetchall()
 
         if not selects_img:
-            img = 'default'
+            img = 'default.png'
 
             return  render_template('user.html', id=id, img=img)
         else:
-            img = selects_img
+            img = selects_img+'.png'
             return  render_template('user.html', id=id, img=img)
     else:
         return  render_template('user.html')

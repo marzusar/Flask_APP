@@ -11,8 +11,8 @@
 
     <div class="user_conteiner">
         <div class="data">
-            <img height = '250px' width = '250px' src="3335154.jpg" alt="logo" class="user_ava">
-            <p class="user_data">{{name}}</p>
+            <img height = '250px' width = '250px' src="{{url_for('static', filename='img/{{img}}') }}" alt="logo" class="user_ava">
+            <p class="user_data">{{id}}</p>
             <p class="user_data">Дата акаунта</p>
         </div>
         <br>
