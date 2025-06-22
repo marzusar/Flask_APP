@@ -19,13 +19,14 @@ body{
     }
 
 .acc{
-    width: 15%;
     text-align: center;
 }
     .but{
         padding: 5px 7px;
-
     }
+        .img_acc{
+            width: 20%;
+        }
 
     .none{
         display: none;

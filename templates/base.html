@@ -28,13 +28,13 @@
                 
                 <form action="/index"  method="post">   
                     <div class="link">
-                    <input type="submit" value="Главная страница"/>
+                        <input type="submit" value="Главная страница"/>
                     </div>
                 </form>
                 
                 <form action="/serch"  method="post">   
                     <div class="link">
-                    <input type="submit" value="Поиск туристического объекта"/>
+                        <input type="submit" value="Поиск туристического объекта"/>
                     </div>
                 </form>
                 
@@ -43,7 +43,7 @@
             {% if ava %}
                 <div class="acc">
                     <a class="but" href="/user" method="post">
-                        <img src="/static/img/{{ava}}" alt="ava">
+                        <img class="img_acc" src="/static/img/{{ava}}" alt="ava">
                     </a>
                 </div>                
             {% else %}
