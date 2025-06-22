@@ -133,7 +133,7 @@ def aut():
             conn.close()
             conn.close()
 
-            return render_template("index.html",name=name, name_img=name_img, id=id)       
+            return render_template("index.html", name_img=name_img, id=id)       
     else:
         return render_template('aut.html')
 
