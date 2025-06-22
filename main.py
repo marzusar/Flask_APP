@@ -113,7 +113,8 @@ def aut():
             return redirect(url_for("reg"))
 
         id = cur.execute(f"""
-        SELECT id FROM public."users" WHERE user_name = '{name}' AND user_password = '{password}';
+        SELECT id FROM public."users" 
+        WHERE user_name = {name} AND user_password = {password};
         """) 
         
         
