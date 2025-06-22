@@ -139,7 +139,7 @@ def aut():
                 img = 'default.webp'
             elif name_img:
                 img = name_img[0]
-                img +='.webp'
+                
             conn.close()
             conn.close()
 
@@ -164,7 +164,7 @@ def user():
         join left public."users" on public."images".id = public."users".id_img
         where public."users".id = {id};
         ''')
-        ava = cur.fetchall()
+        clear_ava = cur.fetchall()
 
         # Вывод имя пользователя
         cur.execute(f'''
@@ -180,6 +180,7 @@ def user():
         ''')
         data_add = cur.fetchall()
 
+        ava=clear_ava[0]
         if ava:
             ava+='.webp'
             return  render_template('user.html', id=id, ava=ava, user_name=user_name, data_add=data_add)
