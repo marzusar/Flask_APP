@@ -31,13 +31,8 @@ def index():
             print('[INFO] Error while working with PostgreSQl', ex)
 
         id = id
-        cur.execute('''select name_img from public."images" 
-                    left join public."users" on public."images".id = public."users".id_img
-                    where public."users".id = {id};''')
-        name_img = cur.fetchall()
-        conn.close()
         
-        return render_template('index.html', img=name_img)
+        return render_template('index.html')
     else:
         return render_template('index.html')
 
@@ -88,10 +83,15 @@ def reg():
             """)
             id = cur.fetchall()
             
-            # Committing the transaction
+            
+            cur.execute(f'''select name_img from public."images" 
+                        left join public."users" on public."images".id = public."users".id_img
+                        where public."users".id = {id};''')
+            name_img = cur.fetchall()
+            conn.close()
             conn.close()
 
-            return render_template("index.html", id=id)
+            return render_template("index.html", name_img=name_img, id=id)
     else:
         return render_template("reg.html")
    
@@ -121,9 +121,15 @@ def aut():
             flash("Такого пользователя c таким именем или паролем не существует. Пожалуйста, проверте введённые данные или зарегестрируйтесь.")
             return redirect(url_for("aut"))
         
-        else:
-            return render_template('index.html', id=id)
-       
+        elif id:
+            cur.execute(f'''select name_img from public."images" 
+                        left join public."users" on public."images".id = public."users".id_img
+                        where public."users".id = {id};''')
+            name_img = cur.fetchall()
+            conn.close()
+            conn.close()
+
+            return render_template("index.html", name_img=name_img, id=id)       
     else:
         return render_template('aut.html')
 
