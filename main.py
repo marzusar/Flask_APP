@@ -122,7 +122,7 @@ def aut():
     else:
         return render_template('aut.html')
 
-@app.route("/us")
+@app.route("/user", methods=['POST', 'GET'])
 def user():
     if request.method == 'POST':
         try:
