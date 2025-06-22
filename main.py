@@ -112,10 +112,11 @@ def aut():
             flash (" Введите корректные данные. ")
             return redirect(url_for("reg"))
 
-        id = cur.execute(f"""
+        cur.execute(f"""
         SELECT id FROM public."users" 
         WHERE user_name = '{name}' AND user_password = '{password}';
         """) 
+        id = cur.fetchall()
 
         if not id:
             flash(f"Такого пользователя c таким именем или паролем не существует. Пожалуйста, проверте введённые данные или зарегестрируйтесь.{id}")
