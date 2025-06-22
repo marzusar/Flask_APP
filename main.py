@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
 import psycopg2
 import os
+import re
 
 
 app = Flask(__name__)
@@ -116,7 +117,8 @@ def aut():
         SELECT id FROM public."users" 
         WHERE user_name = '{name}' AND user_password = '{password}';
         """) 
-        id = cur.fetchone()
+        clear_id = cur.fetchone()
+        id = re.sub('\D', '', clear_id)
 
 
         if not id:
