@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
 from function import select_DB, insert_DB
-import psycopg2
 import os
 
 
