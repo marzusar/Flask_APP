@@ -1,28 +1,32 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
-from function import select_DB, insert_DB
+import psycopg2
 import os
 
 
 app = Flask(__name__)
 app.secret_key = os.environ["SECRET_KEY"]
 
+# Функция подключения к базе данных
+def get_db_connection():
+    
+    conn = psycopg2.connect(
+        database=os.environ["POSTGRES_DB"],
+        user=os.environ["PGUSER"],
+        password=os.environ["PGPASSWORD"],
+        host=os.environ["PGHOST"],
+        port=os.environ["PGPORT"]
+        
+    )
+    return conn
+
 # Вывод Главной страницы
 @app.route('/index', methods=['POST', 'GET'])
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':
-        id=id
-        
-        ava=select_DB(' name_img ', 
-                      'public."images" ', 
-                      ' left join public."users" on public."images".id = public."users".id_img ', 
-                      f' where public."users".id = {id};')
-        if ava:
-            ava+='.webp'
-            return render_template('index.html', ava=ava)
-        else:
-            ava = 'default.webp'
-            return render_template('index.html', ava=ava)
+        name = request.form['nameLogin']
+        id = request.form['idLogin']
+        return render_template('index.html', name=name)
     else:
         return render_template('index.html')
 
@@ -30,112 +34,110 @@ def index():
 @app.route('/reg', methods=['POST', 'GET'])
 def reg():
     if request.method == 'POST':
+        try:
+            conn = get_db_connection()
+        except Exception as ex:
+            print('[INFO] Error while working with PostgreSQl', ex)
+        cursor = conn.cursor()
 
         name = request.form['name']
         phone = request.form['phone']
         password1 = request.form['password1']
         password2 = request.form['password2']
 
-        if any(char in """.,:;"=!_*-+()/#¤%&)"""  for char in name) or any(char in """.,:;"=!_*-+()/#¤%&)""" for char in phone) or any(char in """("':;=! .,'")""" for char in password1):
+        if any(char in """.,:;"=!_*-+()/#¤%&)"""  for char in name) or any(char in """.,:;"=!_*-+()/#¤%&)""" for char in phone):
             flash (" Введите корректные данные. ")
             return redirect(url_for("reg"))
         
-        
-        select_name = select_DB(' user_name ', 
-                                ' public."users" ', 
-                                '',
-                                f''' where user_name = '{name}'; ''')
+        select_name = f"""
+                SELECT user_name FROM public."users" where user_name == "{name}";
+            """
 
+        cursor.execute(select_name)
+        select_name = cursor.fetchall()
+        
 
         if password1 != password2:
             flash (" Пароли не совпадают. ")
             return redirect(url_for("reg"))
-        
         elif select_name:
-            flash (" Такое имя уже существует. ")
+            flash (" Такое имя  уже существует. ")
             return redirect(url_for("reg"))
-        
         else:       
-            #добавление пользователя в базу данных
-            insert_DB(' public."users" ', 
-                      ' (user_name, user_password, user_phone) ',
-                      f' ({name},{password1},{phone}); ')
+           
+            insert_query = """
+                INSERT INTO public."users" (user_name, user_password, user_phone, data_add, id_role)
+                VALUES (%s, %s, %s, NOW(), 2);
+            """
+            data = (name, password1, phone)
+            cursor.execute(insert_query, data)
 
-            #поиск id пользоватля
-            id = select_DB(' id ', 
-                           ' public."users" ', 
-                           '',
-                           f''' whereuser_name = '{name}' and user_pasword = {password1}; ''')
+            select_id = """
+                SELECT id FROM public."users" WHERE user_name = %s AND user_password = %s;
+            """
+            cursor.execute(select_id, data)
+            id = cursor.fetchall()
+            
+            # Committing the transaction
+            conn.commit()
 
-            return render_template("index.html", id=id)
+            cursor.close()
+            conn.close()
+
+            return render_template("index.html", name=name, id=id)
     else:
         return render_template("reg.html")
    
-# #Вывод страници Авторизации
-# @app.route('/aut', methods=['POST', 'GET'])
-# def aut():
-#     if request.method == 'POST':
-#         try:
-#             conn = get_connection()
-#         except Exception as ex:
-#             print('[INFO] Error while working with PostgreSQl', ex)
+#Вывод страници Авторизации
+@app.route('/aut', methods=['POST', 'GET'])
+def aut():
+    if request.method == 'POST':
+        try:
+            conn = get_db_connection()
+        except Exception as ex:
+            print('[INFO] Error while working with PostgreSQl', ex)
 
-#         name = request.form['name']
-#         password = request.form['password']
+        name = request.form['name']
+        password = request.form['password']
 
-#         if any(char in """.,:;"=!_*-+()/#¤%&)"""  for char in name) or any(char in """.,:;"=!_*-+()/#¤%&)""" for char in password):
-#             flash (" Введите корректные данные. ")
-#             return redirect(url_for("reg"))
+        if any(char in """.,:;"=!_*-+()/#¤%&)"""  for char in name) or any(char in """.,:;"=!_*-+()/#¤%&)""" for char in password):
+            flash (" Введите корректные данные. ")
+            return redirect(url_for("reg"))
 
-#         cursor = conn.cursor()
+        cursor = conn.cursor()
 
-#         select_query = """
-#         SELECT id FROM public."users" WHERE user_name = %s AND user_password = %s;
-#         """
-#         data = (name, password)
+        select_query = """
+        SELECT id FROM public."users" WHERE user_name = %s AND user_password = %s;
+        """
+        data = (name, password)
 
-#         cursor.execute(select_query, data)    
-#         user = cursor.fetchone()
+        cursor.execute(select_query, data)    
+        user = cursor.fetchone()
         
-#         if not user:
-#             flash("Такого пользователя c таким именем или паролем не существует. Пожалуйста, проверте введённые данные или зарегестрируйтесь.")
-#             return redirect(url_for("aut"))
-#         else:
-#             return render_template('index.html', name=name, id=user)
+        if not user:
+            flash("Такого пользователя c таким именем или паролем не существует. Пожалуйста, проверте введённые данные или зарегестрируйтесь.")
+            return redirect(url_for("aut"))
+        else:
+            return render_template('index.html', name=name, id=user)
        
-#     else:
-#         return render_template('aut.html')
+    else:
+        return render_template('aut.html')
 
-# @app.route("/user", methods=['POST', 'GET'])
-# def user():
-#     if request.method == 'POST':
-#         try:
-#             conn = get_connection()
-#         except Exception as ex:
-#             print('[INFO] Error while working with PostgreSQl', ex)
-#         cur = conn.cursor()
+@app.route("/user", methods=['POST', 'GET'])
+def user():
+    if request.method == 'POST':
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+        except Exception as ex:
+            print('[INFO] Error while working with PostgreSQl', ex)
 
-#         id=1
+        id = request.form['idLogin']
 
-#         select_img=f"""
-#         Select name_img from public."images" 
-#         left join public."users" on public."images" .id = public."users".id_img
-#         where u.id = {id};
-#         """      
-#         cur.execute(select_img)
+        return  render_template('user.html', id=id)
 
-#         selects_img = cur.fetchall()
-
-#         if not selects_img:
-#             img = 'default.webp'
-#             return  render_template('user.html', id=id, img=img)
-#         else:
-
-#             img = selects_img+'.webp'
-#             return  render_template('user.html', id=id, img=img)
-        
-#     else:
-#         return  render_template('user.html')
+    else:
+        return  render_template('user.html')
 
 
 if __name__ == '__main__':
