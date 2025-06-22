@@ -137,7 +137,7 @@ def user():
         id=1
 
         select_img=f"""
-        Select name_img for public."images" 
+        Select name_img from public."images" 
         left join public."users" on public."images" .id = public."users".id_img
         where u.id = {id};
         """      
