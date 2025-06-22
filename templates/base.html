@@ -44,7 +44,13 @@
                 
             </div>  
 
-            {% if not name_img %}
+            {% if name %}
+                <div class="acc">
+                    <form class="but" action="/user" method="post">
+                        <img src="{{url_for('static', filename='img/{{ava}}') }}" alt="ava">
+                    </form>
+                </div>                
+            {% else %}
                 <div class="acc"><!--Кнопки регистрации-->
 
                     <form class="but" action="/aut">
@@ -55,12 +61,6 @@
                         <input type="submit" value="Зарегистрироваться" />
                     </form>
 
-                </div>
-            {% else %}
-                <div class="acc">
-                    <form class="but" action="/user" method="post">
-                        <img src="{{url_for('static', filename='img/{{ava}}') }}" alt="ava">
-                    </form>
                 </div>
             {% endif %}
 
