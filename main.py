@@ -124,13 +124,16 @@ def aut():
 
 @app.route("/user")
 def user():
-    name = request.form['nameLogin']
-    id = request.form['idLogin']
+    if request.method == 'POST':
+        name = request.form['nameLogin']
+        id = request.form['idLogin']
 
-    select_img="""
-    Select 
-    """
-    return  render_template('user.html', name=name)
+        select_img="""
+        Select 
+        """
+        return  render_template('user.html', name=name)
+    else:
+        return  render_template('user.html')
 
 
 if __name__ == '__main__':
