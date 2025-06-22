@@ -34,8 +34,8 @@
                 </form>
                 
                 <form action="/serch"  method="post">   
-                    <div class=""><input name="nameLogin" value ={{name}}></div>
-                    <div class=""><input name="idLogin" value ={{id}}></div>
+                    <div class="none"><input name="nameLogin" value ={{name}}></div>
+                    <div class="none"><input name="idLogin" value ={{id}}></div>
 
                     <div class="link">
                     <input type="submit" value="Поиск туристического объекта"/>
@@ -46,10 +46,9 @@
 
             {% if img %}
                 <div class="acc">
-                    <form class="but" action="/user" method="post">
-                        {{img}}
+                    <a class="but" href="/user" method="post">
                         <img src="/static/img/{{img}}" alt="ava">
-                    </form>
+                    </a>
                 </div>                
             {% else %}
                 <div class="acc"><!--Кнопки регистрации-->
