@@ -114,8 +114,9 @@ def aut():
 
         id = cur.execute(f"""
         SELECT id FROM public."users" 
-        WHERE user_name = {name} AND user_password = {password};
+        WHERE user_name = '{name}' AND user_password = '{password}';
         """) 
+        print(id)
         
         
         if not id:
