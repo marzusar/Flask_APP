@@ -118,7 +118,7 @@ def aut():
         WHERE user_name = '{name}' AND user_password = '{password}';
         """) 
         clear_id = cur.fetchone()
-        id = re.sub('\D', '', clear_id)
+        id = clear_id[0]
 
 
         if not id:
