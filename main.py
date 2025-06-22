@@ -61,7 +61,7 @@ def reg():
             flash (" Пароли не совпадают. ")
             return redirect(url_for("reg"))
         elif select_name:
-            flash (" Такое имя  уже существует. ")
+            flash (" Такое имя уже существует. ")
             return redirect(url_for("reg"))
         else:       
            
