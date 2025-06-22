@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
 import psycopg2
 import os
-import re
+
 
 
 app = Flask(__name__)
@@ -185,7 +185,7 @@ def user():
         elif not ava:
             ava = 'default.webp'
         
-        return render_template('user.html',  id=id, ava=ava, user_name=user_name, data_add=data_add)
+        return render_template('user.html',  id=id, ava=ava, clear_ava=clear_ava, user_name=user_name, data_add=data_add)
 
     else:
         return  render_template('user.html')
