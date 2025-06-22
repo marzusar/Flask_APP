@@ -50,7 +50,7 @@ def reg():
             return redirect(url_for("reg"))
         
         select_name = """
-                SELECT user_name FROM public."users where user_name == "%s"
+                SELECT user_name FROM public."users" where user_name == "%s"
             """
         data = (name)
         cursor.execute(select_name, data)
