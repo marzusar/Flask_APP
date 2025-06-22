@@ -13,6 +13,7 @@
     width: 80%;
 }
     .user_ava{
+        width: 40%;
         padding: 20px 5% 0px;
         float: left;
     }
@@ -28,11 +29,14 @@
 
 .button{
     margin: 20px 20px;
-    position: absolute;
+    position:absolute;
+    display: flex;
     bottom: 0px;
 }
     .but{
         font-size: 30px;
         margin: 20px;
         padding: 10px 10px 10px;
+
+        width: 50%;
     }
