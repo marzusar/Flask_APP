@@ -64,7 +64,7 @@ def reg():
             flash (" Такое имя уже существует. ")
             return redirect(url_for("reg"))
         else:       
-           
+            #добавление пользователя в базу данных
             insert_query = """
                 INSERT INTO public."users" (user_name, user_password, user_phone, data_add, id_role)
                 VALUES (%s, %s, %s, NOW(), 2);
@@ -72,9 +72,11 @@ def reg():
             data = (name, password1, phone)
             cursor.execute(insert_query, data)
 
+            #поиск id пользоватля
             select_id = """
                 SELECT id FROM public."users" WHERE user_name = %s AND user_password = %s;
             """
+            data = (name, password1, phone)
             cursor.execute(select_id, data)
             id = cursor.fetchall()
             
