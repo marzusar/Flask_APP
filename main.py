@@ -125,13 +125,32 @@ def aut():
 @app.route("/user")
 def user():
     if request.method == 'POST':
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+        except Exception as ex:
+            print('[INFO] Error while working with PostgreSQl', ex)
+
         name = request.form['nameLogin']
         id = request.form['idLogin']
 
         select_img="""
-        Select 
+        Select name_img for public."images" i
+        left join public."users" u on i.id = u.id_img
+        where u.id = %s 
         """
-        return  render_template('user.html', name=name)
+        data =(id)        
+        cur.execute(select_img, data)
+
+        selects_img = cur.fetchall()
+
+        if not selects_img:
+            img = 'default'
+
+            return  render_template('user.html', id=id, img=img)
+        else:
+            img = selects_img
+            return  render_template('user.html', id=id, img=img)
     else:
         return  render_template('user.html')
 
