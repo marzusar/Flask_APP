@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
+from function import get_connection
 import psycopg2
 import os
 
@@ -14,10 +15,11 @@ def get_db_connection():
         user=os.environ["PGUSER"],
         password=os.environ["PGPASSWORD"],
         host=os.environ["PGHOST"],
-        port=os.environ["PGPORT"]
-        
+        port=os.environ["PGPORT"]        
     )
     return conn
+
+
 
 # Вывод Главной страницы
 @app.route('/index', methods=['POST', 'GET'])
@@ -35,7 +37,7 @@ def index():
 def reg():
     if request.method == 'POST':
         try:
-            conn = get_db_connection()
+            conn = get_connection()
         except Exception as ex:
             print('[INFO] Error while working with PostgreSQl', ex)
         cursor = conn.cursor()
@@ -95,7 +97,7 @@ def reg():
 def aut():
     if request.method == 'POST':
         try:
-            conn = get_db_connection()
+            conn = get_connection()
         except Exception as ex:
             print('[INFO] Error while working with PostgreSQl', ex)
 
@@ -129,7 +131,7 @@ def aut():
 def user():
     if request.method == 'POST':
         try:
-            conn = get_db_connection()
+            conn = get_connection()
         except Exception as ex:
             print('[INFO] Error while working with PostgreSQl', ex)
         cur = conn.cursor()
