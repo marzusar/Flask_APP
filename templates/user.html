@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Страница пользователя
+{% endblock %}
+
+{% block body %}
+
+
+    <h1 class="h11">Страница пользователя</h1>
+
+    <div class="user_conteiner">
+        <div class="data">
+            <img height = '250px' width = '250px' src="3335154.jpg" alt="logo" class="user_ava">
+            <p class="user_data">{{name}}</p>
+            <p class="user_data">Дата акаунта</p>
+        </div>
+        <br>
+        <div class="button">
+            <input type="button" action="#" class="but" value="Изменить данные">
+            <input type="button" action="#" class="but" value="Посмотреть коментари">
+        </div>
+    </div>
+
+    
+{% endblock %}

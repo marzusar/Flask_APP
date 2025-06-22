@@ -25,7 +25,7 @@ def index():
     if request.method == 'POST':
         name = request.form['nameLogin']
         id = request.form['idLogin']
-        return render_template('index.html', name=name, id=id)
+        return render_template('index.html', name=name)
     else:
         return render_template('index.html')
 
@@ -37,6 +37,7 @@ def reg():
             conn = get_db_connection()
         except Exception as ex:
             print('[INFO] Error while working with PostgreSQl', ex)
+        cursor = conn.cursor()
 
         name = request.form['name']
         phone = request.form['phone']
@@ -48,30 +49,34 @@ def reg():
             return redirect(url_for("reg"))
         
         select_name = """
-                SELECT user_name FROM public."users"
+                SELECT user_name FROM public."users where user_name == "%s"
             """
-        data = (name, password1, phone)
-        selects_name = cursor.execute(select_name, data)
+        data = (name)
+        cursor.execute(select_name, data)
+        select_name = cursor.fetchall()
         
 
         if password1 != password2:
             flash (" Пароли не совпадают. ")
             return redirect(url_for("reg"))
-        elif selects_name:
+        elif select_name:
             flash (" Такое имя  уже существует. ")
             return redirect(url_for("reg"))
         else:       
-            cursor = conn.cursor()
+           
             insert_query = """
                 INSERT INTO public."users" (user_name, user_password, user_phone, data_add, id_role)
                 VALUES (%s, %s, %s, NOW(), 2);
             """
-            id = """
-                SELECT Max(id_user) FROM public."users"
-            """
             data = (name, password1, phone)
             cursor.execute(insert_query, data)
 
+            select_id = """
+                SELECT id FROM public."users" WHERE user_name = %s AND user_password = %s;
+            """
+            cursor.execute(select_id, data)
+            id = cursor.fetchall()
+            
             # Committing the transaction
             conn.commit()
 
@@ -110,21 +115,24 @@ def aut():
         
         if not user:
             flash("Такого пользователя c таким именем или паролем не существует. Пожалуйста, проверте введённые данные или зарегестрируйтесь.")
-            return redirect(url_for("reg"))
+            return redirect(url_for("aut"))
         else:
-            return render_template('index.html', name=name, id=id)
+            return render_template('index.html', name=name, id=user)
        
     else:
         return render_template('aut.html')
 
-@app.route("/log")
-def login():
+@app.route("/user")
+def user():
+    name = request.form['nameLogin']
+    id = request.form['idLogin']
 
+    select_img="""
+    Select 
+    """
     
 
-    return  render_template('login.html')
-
-
+    return  render_template('user.html', name=name)
 
 
 if __name__ == '__main__':
