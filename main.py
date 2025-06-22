@@ -116,11 +116,9 @@ def aut():
         SELECT id FROM public."users" 
         WHERE user_name = '{name}' AND user_password = '{password}';
         """) 
-        print(id)
-        
-        
+
         if not id:
-            flash("Такого пользователя c таким именем или паролем не существует. Пожалуйста, проверте введённые данные или зарегестрируйтесь.")
+            flash(f"Такого пользователя c таким именем или паролем не существует. Пожалуйста, проверте введённые данные или зарегестрируйтесь.{id}")
             return redirect(url_for("aut"))
         
         elif id:
