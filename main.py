@@ -49,11 +49,11 @@ def reg():
             flash (" Введите корректные данные. ")
             return redirect(url_for("reg"))
         
-        select_name = """
-                SELECT user_name FROM public."users" where user_name == "%s";
+        select_name = f"""
+                SELECT user_name FROM public."users" where user_name == "{name}";
             """
-        data = (name)
-        cursor.execute(select_name, data)
+
+        cursor.execute(select_name)
         select_name = cursor.fetchall()
         
 
