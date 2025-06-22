@@ -44,7 +44,7 @@ def reg():
         select_name = select_DB(' user_name ', 
                                 ' public."users" ', 
                                 '',
-                                f' user_name = {name} ')
+                                f' where user_name = {name}; ')
 
 
         if password1 != password2:
@@ -65,7 +65,7 @@ def reg():
             id = select_DB(' id ', 
                            ' public."users" ', 
                            '',
-                           f' user_name = {name} and user_pasword = {password1}; ')
+                           f' where user_name = {name} and user_pasword = {password1}; ')
 
             return render_template("index.html", id=id)
     else:
