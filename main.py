@@ -31,7 +31,7 @@ def index():
         except Exception as ex:
             print('[INFO] Error while working with PostgreSQl', ex)
 
-        id = id
+        id = request.form['idLogin']
         
         return render_template('index.html', id=id)
     else:
@@ -155,7 +155,7 @@ def user():
         except Exception as ex:
             print('[INFO] Error while working with PostgreSQl', ex)
 
-        id = id
+        id = request.form['idLogin']
 
         # Вывод названия изображения аватарки
         cur.execute(f'''
