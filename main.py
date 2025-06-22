@@ -127,32 +127,32 @@ def aut():
 
 @app.route("/user", methods=['POST', 'GET'])
 def user():
-    if request.method == 'POST':
-        try:
-            conn = get_db_connection()
-        except Exception as ex:
-            print('[INFO] Error while working with PostgreSQl', ex)
-        cur = conn.cursor()
-        name = request.form['nameLogin']
-        id = request.form['idLogin']
+    # if request.method == 'POST':
+    #     try:
+    #         conn = get_db_connection()
+    #     except Exception as ex:
+    #         print('[INFO] Error while working with PostgreSQl', ex)
+    #     cur = conn.cursor()
+    #     name = request.form['nameLogin']
+    #     id = request.form['idLogin']
 
-        select_img=f"""
-        Select name_img for public."images" i
-        left join public."users" u on i.id = u.id_img
-        where u.id = {id};
-        """      
-        cur.execute(select_img)
+    #     select_img=f"""
+    #     Select name_img for public."images" i
+    #     left join public."users" u on i.id = u.id_img
+    #     where u.id = {id};
+    #     """      
+    #     cur.execute(select_img)
 
-        selects_img = cur.fetchall()
+    #     selects_img = cur.fetchall()
 
-        if not selects_img:
-            img = 'default.webp'
+    #     if not selects_img:
+    #         img = 'default.webp'
 
-            return  render_template('user.html', id=id, img=img)
-        else:
-            img = selects_img+'.webp'
-            return  render_template('user.html', id=id, img=img)
-    else:
+    #         return  render_template('user.html', id=id, img=img)
+    #     else:
+    #         img = selects_img+'.webp'
+    #         return  render_template('user.html', id=id, img=img)
+    # else:
         return  render_template('user.html')
 
 
