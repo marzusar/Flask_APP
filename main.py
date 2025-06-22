@@ -182,10 +182,10 @@ def user():
         ava=clear_ava[0]
         if ava:
             ava+='.webp'
-            return  render_template('user.html', id=id, ava=ava, user_name=user_name, data_add=data_add)
         elif not ava:
             ava = 'default.webp'
-            return render_template('user.html',  id=id, ava=ava, user_name=user_name, data_add=data_add)
+        
+        return render_template('user.html',  id=id, ava=ava, user_name=user_name, data_add=data_add)
 
     else:
         return  render_template('user.html')

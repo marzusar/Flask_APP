@@ -9,6 +9,7 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+    <div class="none"><input name="idLogin" value ={{id}}></div>
     <div class="header">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
             
@@ -26,18 +27,12 @@
             <div class="links"><!--Ссылки-->                      
                 
                 <form action="/index"  method="post">   
-                    <div class="none"><input name="nameLogin" value ={{name}}></div>
-                    <div class="none"><input name="idLogin" value ={{id}}></div>
-
                     <div class="link">
                     <input type="submit" value="Главная страница"/>
                     </div>
                 </form>
                 
                 <form action="/serch"  method="post">   
-                    <div class="none"><input name="nameLogin" value ={{name}}></div>
-                    <div class="none"><input name="idLogin" value ={{id}}></div>
-
                     <div class="link">
                     <input type="submit" value="Поиск туристического объекта"/>
                     </div>
