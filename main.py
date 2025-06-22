@@ -135,8 +135,10 @@ def aut():
                         left join public."users" on public."images".id = public."users".id_img
                         where public."users".id = {id};''')
             name_img = cur.fetchone()
-            img = name_img[0]+'.webp'
-            
+            if name_img:
+                img = name_img[0]+'.webp'
+            elif not name_img:
+                img = 'default.webp'
             conn.close()
             conn.close()
 
