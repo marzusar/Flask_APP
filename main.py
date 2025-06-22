@@ -50,7 +50,7 @@ def reg():
             return redirect(url_for("reg"))
         
         select_name = """
-                SELECT user_name FROM public."users" where user_name == "%s"
+                SELECT user_name FROM public."users" where user_name == "%s";
             """
         data = (name)
         cursor.execute(select_name, data)
@@ -138,7 +138,7 @@ def user():
         select_img="""
         Select name_img for public."images" i
         left join public."users" u on i.id = u.id_img
-        where u.id = %s 
+        where u.id = %s;
         """
         data =(id)        
         cur.execute(select_img, data)
