@@ -18,16 +18,7 @@ body{
         width: 64px;
     }
 
-.acc{
-    width: 200px;
-    text-align: center;
-}
-    .but{
-        padding: 5px 7px;
-        height: 100px;
-        font-size: 20px;
-        width: 20px;
-    }
+
 
     .none{
         display: none;
