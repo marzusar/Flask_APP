@@ -115,7 +115,7 @@ def aut():
         cur.execute(f"""
         SELECT id FROM public."users" WHERE user_name = '{name}' AND user_password = '{password}';
         """) 
-        id = cur.fetchone()
+        id = cur.fetchall()
         
         if not id:
             flash("Такого пользователя c таким именем или паролем не существует. Пожалуйста, проверте введённые данные или зарегестрируйтесь.")
