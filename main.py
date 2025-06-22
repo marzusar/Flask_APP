@@ -135,7 +135,7 @@ def aut():
                         left join public."users" on public."images".id = public."users".id_img
                         where public."users".id = {id};''')
             name_img = cur.fetchone()
-            img = name_img[0]
+            img = name_img[0]+'.webp'
             
             conn.close()
             conn.close()
