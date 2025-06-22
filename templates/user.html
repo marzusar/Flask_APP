@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
+{% endblock %}
+
 {% block title %}
 Страница пользователя
 {% endblock %}
@@ -13,9 +17,11 @@
         <div class="data">
             <img height = '250px' width = '250px' src="{{url_for('static', filename='img/{{img}}') }}" alt="logo" class="user_ava">
             <p class="user_data">{{id}}</p>
-            <p class="user_data">Дата акаунта</p>
+            <p class="user_data">{{data_add}}</p>
         </div>
+
         <br>
+        
         <div class="button">
             <input type="button" action="#" class="but" value="Изменить данные">
             <input type="button" action="#" class="but" value="Посмотреть коментари">

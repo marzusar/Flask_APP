@@ -30,8 +30,7 @@ body{
         display: none;
     }
 
-.links{
-    
+.links{    
     padding: 3px;
     justify-content: center;
 }
@@ -41,83 +40,31 @@ body{
 
 /*body*/
 
-.body{
-   padding: 0;
-}
-
 .h11{
     text-align: center;
 }
 
 /*FORM*/
-/* Общие стили для формы */
 .form {
-  width: 300px; /* Или другая ширина, по вашему желанию */
-  margin: 20px auto; /* Центрирование по горизонтали */
+  width: 300px;
+  margin: 20px auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #edede9; /* Легкий фон */
+  background-color: #edede9; 
   text-align: center;
 }
 
-/* Стили для элементов формы */
 .form_control {
-  display: block; /* Чтобы каждый элемент был на новой строке */
-  width: 100%; /* Занимаем всю ширину родителя */
+  display: block;
+  width: 100%; 
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-  box-sizing: border-box; /* Чтобы padding и border не влияли на ширину */
+  box-sizing: border-box;
 }
-/* Стили для placeholder (немного серее) */
 ::placeholder {
   color: #999;
 }
-
-/*Serch*/
-
-.serch{
-    width: 80%;
-}
-
-/*User*/
-.user_conteiner{    
-    border: 4px solid #855f5f;
-    border-radius: 5px;
-    margin: 20px auto;        
-    position: relative;
-    height: 80vh;
-    width: 50%;
-}
-
-.data{
-    margin: 20px;
-    width: 80%;
-}
-    .user_ava{
-        padding: 20px 5% 0px;
-        float: left;
-    }
-    .user_data{
-    color:black;
-    border: 2px solid #855f5f;    
-    font-size: 30px;
-    margin-left: 60px;
-    padding: 10px;
-    width: 30%;
-    float: left;
-    }
-
-.button{
-    margin: 20px 20px;
-    position: absolute;
-    bottom: 0px;
-}
-    .but{
-        font-size: 30px;
-        margin: 20px;
-        padding: 10px 10px 10px;
-    }
