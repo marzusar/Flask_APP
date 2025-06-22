@@ -139,7 +139,7 @@ def aut():
                 img = 'default.webp'
             elif name_img:
                 img = name_img[0]
-                
+                img = img+'.webp'
             conn.close()
             conn.close()
 
