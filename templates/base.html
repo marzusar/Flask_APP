@@ -41,18 +41,18 @@
             </div>  
 
             {% if ava %}
-                <div class="acc">
+                <div class="acaunt">
                     <a class="but" href="/user" method="post">
                         <img class="img_acc" src="/static/img/{{ava}}" alt="ava">
                     </a>
                 </div>                
             {% else %}
-                <div><!--Кнопки регистрации-->
-                    <form  action="/aut">
+                <div class="acaunt"><!--Кнопки регистрации-->
+                    <form class="ac_form" action="/aut">
                         <input type="submit" value="Войти" />
                     </form>
 
-                    <form action="/reg">
+                    <form class="ac_form" action="/reg">
                         <input type="submit" value="Зарегистрироваться" />
                     </form>
 
