@@ -32,7 +32,7 @@ def index():
 
         id = id
         
-        return render_template('index.html')
+        return render_template('index.html', id=id)
     else:
         return render_template('index.html')
 
