@@ -163,21 +163,21 @@ def user():
         join left public."users" on public."images".id = public."users".id_img
         where public."users".id = {id};
         ''')
-        clear_ava = cur.fetchall()
+        clear_ava = cur.fetchone()
 
         # Вывод имя пользователя
         cur.execute(f'''
         select user_name from public."users"
         where id = {id};
         ''')
-        user_name = cur.fetchall()
+        user_name = cur.fetchone()
 
         # Вывод 
         cur.execute(f'''
         select data_add from public."users"
         where id = {id};
         ''')
-        data_add = cur.fetchall()
+        data_add = cur.fetchone()
 
         ava=clear_ava[0]
         if ava:
