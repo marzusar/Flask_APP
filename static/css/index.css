@@ -1,0 +1,47 @@
+.object_list{
+    display:grid;
+    position:absolute;
+    grid-template-columns: repeat(2, 300px);
+    margin: 20px auto;
+
+
+    justify-content:space-between;
+    
+
+    background: rgba(0,0,0, 0.15);
+    border-radius: 15px;
+
+    top: 20%;
+    left: 10%;
+    right: 10%;
+    bottom: 15%;
+}
+
+.object{
+    border: 2px solid black;
+    padding: 10px;
+    margin: 10px;
+    font-size: 20px;
+    
+    display:block;
+    justify-content: center;
+    align-items: center;   
+    
+
+    min-width: 150px;
+    min-height: 150px;
+}
+a {
+    font-family: Verdana, sans-serif; /* Шрифт */
+    font-size: 14px; /* Размер текста */
+    color: blue; /* Цвет текста */
+    text-decoration: none; /* Убираем стандартное подчеркивание */
+    padding: 5px; /* Отступы вокруг ссылки */
+}
+a:hover {
+    color: rgb(59, 59, 245); /* Изменение цвета */
+    text-decoration: underline; /* Добавление подчеркивания */
+    font-weight: bold; /* Жирный шрифт */
+
+    transform: scale(1.1); /* Увеличение при наведении */
+}

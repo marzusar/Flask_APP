@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+
 {% block title %}
 Главная страница
 {% endblock %}
@@ -7,4 +12,16 @@
 {% block body %}
 
     <h1 class="h11">Главная страница</h1>
+
+    <dev class="object_list">
+    {% for object in objects %}
+        <dev class="object">
+                <a href="/index">
+                    <img width="200px" height="200px" src="/static/img/{{object.1}}.webp" alt="">
+                </a>
+                <br>
+                {{object.0}}
+        </dev>    
+    {%endfor%}
+    </dev>
 {% endblock %}
