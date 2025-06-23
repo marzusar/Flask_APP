@@ -26,35 +26,54 @@ def get_db_connection():
     #     password='postgres',
     #     host='localhost'        
     # )
-    # return conn
+    return conn
 
 # Вывод Главной страницы
 @app.route('/index', methods=['POST', 'GET'])
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    try:
-        conn = get_db_connection()
-        curr = conn.cursor()
-    except Exception as ex:
-        print('[INFO] Error while working with PostgreSQl', ex)
-
-    list = []
-    for i in range(4):
-        rand = random.randint(1,7)
-        curr.execute(f"""
-                     select public.object.name_object, public.images.name_img from public.object
-                     left join public.images on public.object.id_ing = public.images.id
-                     where public.object.id = {rand};
-                     """)
-    
-        list.insert(i, curr.fetchone())
-        print(list)
-        print (list)
     if request.method == 'POST':
-        id = request.form['idLogin']
+        
+        id = request.form['ID']
+        try:            
+            conn = get_db_connection()
+            curr = conn.cursor()
+        except Exception as ex:
+            print('[INFO] Error while working with PostgreSQl', ex)
+        list = []
+        for i in range(4):
+            rand = random.randint(1,7)
+            curr.execute(f"""
+                         select public.object.name_object, public.images.name_img from public.object
+                         left join public.images on public.object.id_ing = public.images.id
+                         where public.object.id = {rand};
+                         """)
+            list.insert(i, curr.fetchone())
+            print(list)
+            
+
         return render_template('index.html',objects=list, id=id)
     else:
-        return render_template('index.html',objects=list)
+        try:
+            conn = get_db_connection()
+            curr = conn.cursor()
+        except Exception as ex:
+            print('[INFO] Error while working with PostgreSQl', ex)
+
+        list = []
+        for i in range(4):
+            rand = random.randint(1,7)
+            curr.execute(f"""
+                         select public.object.name_object, public.images.name_img from public.object
+                         left join public.images on public.object.id_ing = public.images.id
+                         where public.object.id = {rand};
+                         """)
+        
+            list.insert(i, curr.fetchone())
+            print(list)
+            print (list)
+    curr.close()
+    return render_template('index.html',objects=list)
 #Вевеод страницы Регистрации
 @app.route('/reg', methods=['POST', 'GET'])
 def reg():
@@ -100,8 +119,8 @@ def reg():
             cur.execute(f"""
                 SELECT id FROM public."users" WHERE user_name = '{name}' AND user_password = '{password1}';
             """)
-            id = cur.fetchone()
-            print(id)
+            id = cur.fetchone()[0]
+            
 
             cur.execute(f'''select name_img from public."images" 
                         left join public."users" on public."images".id = public."users".id_img
@@ -141,7 +160,7 @@ def aut():
         WHERE user_name = '{name}' AND user_password = '{password}';
         """) 
         clear_id = cur.fetchone()
-        id = clear_id[0]
+        id = clear_id
 
 
         if not id:
@@ -173,7 +192,7 @@ def user():
         except Exception as ex:
             print('[INFO] Error while working with PostgreSQl', ex)
 
-        id = request.form['idLogin']
+        id = request.form['ID']
 
         # Вывод названия изображения аватарки
         cur.execute(f'''

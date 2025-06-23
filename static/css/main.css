@@ -31,10 +31,13 @@ body{
 
 
 .acaunt{
-    padding: 10px 10px 0px;
+    padding: 10px;
     width: 200px;
+    height: 90px;
+    display: block;
     
-}    
+    
+}
 
 /*body*/
 

@@ -11,7 +11,6 @@
 <body>
     <div class="header">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <div class="none"><input name="idLogin" value ={{id}}></div>   
             <div class="logo"> <!--логотип-->
                 <form action="/index"  method="post">   
                     <div class="header_img d-inline-flex "
@@ -21,18 +20,16 @@
                 </form>
             </div> 
 
-
+            
             <div class="links"><!--Ссылки-->                      
-                
-                <form action="/index"  method="post">   
+                <form method="post">
+                    <div>
+                    <input class="none" name=ID value ={{id}}>                        
+                    </div>
+                </form> 
+                <form action="/"  method="post">   
                     <div class="link">
                         <input type="submit" value="Главная страница"/>
-                    </div>
-                </form>
-                
-                <form action="/serch"  method="post">   
-                    <div class="link">
-                        <input type="submit" value="Поиск туристического объекта"/>
                     </div>
                 </form>
                 
@@ -40,12 +37,14 @@
 
             {% if ava %}
                 <div class="acaunt">
+                    <form method="post"><input class="none" name="id" value ={{id}}></form> 
                     <a class="but" href="/user" method="post">
                         <img height="64px" width="64px" class="img_acc" src="/static/img/{{ava}}" alt="ava">
                     </a>
                 </div>                
             {% else %}
                 <div class="acaunt"><!--Кнопки регистрации-->
+                    <form method="post"><input class="none" name="id" value ={{id}}></form> 
                     <form class="ac_form" action="/aut">
                         <input type="submit" value="Войти" />
                     </form>
