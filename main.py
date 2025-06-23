@@ -12,20 +12,20 @@ app.secret_key = '123bnasdjn234jinasd'
 # Функция подключения к базе данных
 def get_db_connection():
     
-    conn = psycopg2.connect(
-        database=os.environ["POSTGRES_DB"],
-        user=os.environ["PGUSER"],
-        password=os.environ["PGPASSWORD"],
-        host=os.environ["PGHOST"],
-        port=os.environ["PGPORT"]
-        
-    )
     # conn = psycopg2.connect(
-    #     database='Tour',
-    #     user='postgres',
-    #     password='postgres',
-    #     host='localhost'        
+    #     database=os.environ["POSTGRES_DB"],
+    #     user=os.environ["PGUSER"],
+    #     password=os.environ["PGPASSWORD"],
+    #     host=os.environ["PGHOST"],
+    #     port=os.environ["PGPORT"]
+        
     # )
+    conn = psycopg2.connect(
+        database='Tour',
+        user='postgres',
+        password='postgres',
+        host='localhost'        
+    )
     return conn
 
 # Вывод Главной страницы
@@ -160,7 +160,7 @@ def aut():
         WHERE user_name = '{name}' AND user_password = '{password}';
         """) 
         clear_id = cur.fetchone()
-        id = clear_id
+        id = clear_id[0]
 
 
         if not id:
