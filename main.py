@@ -12,21 +12,21 @@ app.secret_key = '123bnasdjn234jinasd'
 # Функция подключения к базе данных
 def get_db_connection():
     
-    # conn = psycopg2.connect(
-    #     database=os.environ["POSTGRES_DB"],
-    #     user=os.environ["PGUSER"],
-    #     password=os.environ["PGPASSWORD"],
-    #     host=os.environ["PGHOST"],
-    #     port=os.environ["PGPORT"]
-        
-    # )
     conn = psycopg2.connect(
-        database='Tour',
-        user='postgres',
-        password='postgres',
-        host='localhost'        
+        database=os.environ["POSTGRES_DB"],
+        user=os.environ["PGUSER"],
+        password=os.environ["PGPASSWORD"],
+        host=os.environ["PGHOST"],
+        port=os.environ["PGPORT"]
+        
     )
-    return conn
+    # conn = psycopg2.connect(
+    #     database='Tour',
+    #     user='postgres',
+    #     password='postgres',
+    #     host='localhost'        
+    # )
+    # return conn
 
 # Вывод Главной страницы
 @app.route('/index', methods=['POST', 'GET'])
