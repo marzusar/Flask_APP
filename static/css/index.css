@@ -1,8 +1,9 @@
 .object_list{
     background-position:bottom;
-    display:grid;
+
     position:absolute;
-    grid-template-columns: repeat(2, 300px);
+    grid-template-columns: repeat(1, 150px);
+    grid-template-rows: repeat(1,200px);
     margin: 50px 24%;
 
     box-shadow: 0px 5px 25px rgba(0,0,0,0.5);
@@ -20,24 +21,33 @@
 
 .object{
     border-radius: 15px;
-    border: 2px solid black;
     padding: 10px 10px;
     margin: 10px 0px;
     font-size: 20px;
     
-    display:block;
-    max-height: 250px;
-    height: 100%;
+    grid-row:  1;
+    grid-column:  2;
+    max-height: 95%;
 
-    display: inline;
+    width: 60%;
+    height: 80%;
+
+
+    float:right;
     top: 1%;
 
     box-shadow: 0px 5px 25px rgba(0,0,0,0.5);
 }
-.object input{
+.object_list img{
     border-radius: 15px;    
-    width: 80%;
-    float: right;
+    height: 30%;
+    
+}
+
+.object_list h3{   
+    grid-column: span 1;
+
+    
 }
 
 a {

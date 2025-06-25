@@ -1,25 +1,27 @@
 {% extends 'base.html' %}
 
 {% block css %}
-
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 
 
 {% block title %}
-Главная страница
+Описание туристического объекта 
 {% endblock %}
 
 {% block body %}
     <div class="h1">
-        <h1 class="h11">Главная страница</h1>
+        <h1 class="h11">Описание туристического объекта </h1>
     </div>
 
-    <div class="cont_desc">
-        <div class="desc">
+    <div class="object_list">
+        <h3>{{objects.0}}</h3>
+        <div class="object">
             <div class="description">
                 {{desc.2}}
             </div>
         </div>
+        <img src="/static/img/{{objects.1}}.webp" alt="">
     </div>
 
 

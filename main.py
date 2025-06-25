@@ -194,23 +194,32 @@ def object():
     img = user_img
 
 
-    print('POST')
-    id_object = request.form['id_object']
-    print(id_object)
+    if request.method == 'POST':
 
-    try:
-        conn = get_db_connection()
-        cur = conn.cursor()
-    except Exception as ex:
-        print('[INFO] Error while working with PostgreSQl', ex)
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+        except Exception as ex:
+            print('[INFO] Error while working with PostgreSQl', ex)
 
-    cur.execute(
-        f'''select * from public.desc
-        where id_object = {id_object}'''
-    )
-    desc = cur.fetchone()
+        id_object = request.form['object']
 
-    return render_template("object.html", desc=desc, user_id = id, user_img=img,)
+        cur.execute(
+            f'''select * from public.desc
+            where id_object = {id_object}'''
+        )
+        desc = cur.fetchone()
+        
+        cur.execute(f"""
+                     select public.object.name_object, public.images.name_img from public.object
+                     left join public.images on public.object.id_ing = public.images.id
+                     where public.object.id = {id_object};
+                     """)   
+        objects = cur.fetchone()
+
+        return render_template("object.html", objects=objects, desc=desc, user_id = id, user_img=img,)
+    else:
+       return render_template("index.html", user_id = id, user_img=img,)
 
 
 

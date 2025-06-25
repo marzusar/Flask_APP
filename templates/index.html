@@ -19,12 +19,15 @@
     {% for object in objects %}
         <dev class="object">
             <form  class="none" method="post"><input type="text" name="id_object" value="{{object.2}}"></form>
-            <form action="/object">
-                <input class="" type="image" src="/static/img/{{object.1}}.webp">                
+            <form action="/object" method="post">
+                <div>
+                    <img src="/static/img/{{object.1}}.webp" alt="">
+                    <input name="object" type="submit" value="{{object.2}}"> 
+                </div>        
             </form>
 
             <br>
-            {{object.0}}
+           
         </dev>    
     {%endfor%}
     </dev>
