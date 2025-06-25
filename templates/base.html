@@ -14,37 +14,24 @@
             <div class="logo"> <!--логотип-->
                 <form action="/index"  method="post">   
                     <div class="header_img d-inline-flex "
-                        <a typehref="/" class="header_img d-inline-flex "> 
+                        <a>
+                        <a href="/index" class="header_img d-inline-flex ">
                             <img  src="{{url_for('static', filename='img/ico.webp') }}" alt="logo">
+                        </a>
                     </div>
                 </form>
-            </div> 
-
-            
-            <div class="links"><!--Ссылки-->                      
-                <form method="post">
-                    <div>
-                    <input class="none" name=ID value ={{id}}>                        
-                    </div>
-                </form> 
-                <form action="/"  method="post">   
-                    <div class="link">
-                        <input type="submit" value="Главная страница"/>
-                    </div>
-                </form>
-                
             </div>  
 
-            {% if ava %}
+            {% if user_img %}
                 <div class="acaunt">
-                    <form method="post"><input class="none" name="id" value ={{id}}></form> 
-                    <a class="but" href="/user" method="post">
-                        <img height="64px" width="64px" class="img_acc" src="/static/img/{{ava}}" alt="ava">
-                    </a>
+                     <form action="#" method="post">
+                        <a class="but" href="/user" >
+                            <img  class="img_acc" src="/static/img/{{user_img}}" alt="user_img">
+                        </a>  
+                    </form>                    
                 </div>                
             {% else %}
                 <div class="acaunt"><!--Кнопки регистрации-->
-                    <form method="post"><input class="none" name="id" value ={{id}}></form> 
                     <form class="ac_form" action="/aut">
                         <input type="submit" value="Войти" />
                     </form>
@@ -54,10 +41,7 @@
                     </form>
 
                 </div>
-            {% endif %}
-
-
-               
+            {% endif %}               
     </div> 
         
     {% block body %}{% endblock %}

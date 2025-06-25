@@ -17,37 +17,34 @@ body{
         height: 64px;
         width: 64px;
     }
+    .acaunt img {
+        width: 64px;
+        height: 64px;
+        float: right;
+    }
     .none{
         display: none;
     }
 
-.links{    
-    padding: 3px;
-    justify-content: center;
-}
-    .link{
-        padding:5px 7px;
-    }
-
-
 .acaunt{
     padding: 10px;
     width: 200px;
-    height: 90px;
-    display: block;
-    
-    
+    display: flex;
+    justify-content:flex-end; 
+}
+.ac_form{
+    margin: 1%;
 }
 
 /*body*/
 
 .h11{
-    text-align: center;
+    text-align:center;
 }
 
 /*FORM*/
 .form {
-  width: 300px;
+  width: 350px;
   margin: 20px auto;
   padding: 20px;
   border: 1px solid #ccc;

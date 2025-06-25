@@ -15,16 +15,18 @@
 
     <div class="user_conteiner">
         <div class="data">
-            <img src="/static/img/{{ava}}" alt="logo" class="user_ava">
-            <p class="user_data">{{clear_ava}}</p>
+            <img src="/static/img/{{user_img}}" alt="logo" class="user_img">
+            <p class="user_data">{{user_name}}</p>
             <p class="user_data">{{data_add}}</p>
         </div>
 
         <br>
 
         <div class="button">
-            <input type="button" action="#" class="but" value="Изменить данные">
-            <input type="button" action="#" class="but" value="Посмотреть коментари">
+
+            <form action="/exit" class="but">                
+                <button class="but">Выйти с аккаунта</button>                               
+            </form>
         </div>
     </div>
 

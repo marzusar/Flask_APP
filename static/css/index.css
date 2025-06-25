@@ -3,7 +3,7 @@
     display:grid;
     position:absolute;
     grid-template-columns: repeat(2, 300px);
-    margin: 50px;
+    margin: 50px 24%;
 
     box-shadow: 0px 5px 25px rgba(0,0,0,0.5);
 
@@ -13,36 +13,44 @@
     padding: 15px;
 
     top: 20%;
-    left: 23%;
-    right: 23%;
+    width: 54%;
+    height: 70%;
 
 }
 
 .object{
+    border-radius: 15px;
     border: 2px solid black;
     padding: 10px 10px;
     margin: 10px 0px;
     font-size: 20px;
     
-    display:block; 
-    
+    display:block;
+    max-height: 250px;
+    height: 100%;
 
-    min-width: 150px;
-    min-height: 150px;
+    display: inline;
+    top: 1%;
 
     box-shadow: 0px 5px 25px rgba(0,0,0,0.5);
 }
+.object input{
+    border-radius: 15px;    
+    width: 80%;
+    float: right;
+}
+
 a {
-    font-family: Verdana, sans-serif; /* Шрифт */
-    font-size: 14px; /* Размер текста */
-    color: blue; /* Цвет текста */
-    text-decoration: none; /* Убираем стандартное подчеркивание */
-    padding: 5px; /* Отступы вокруг ссылки */
+    font-family: Verdana, sans-serif; 
+    font-size: 14px; 
+    color: blue; 
+    text-decoration: none; 
+    padding: 5px; 
 }
 a:hover {
-    color: rgb(59, 59, 245); /* Изменение цвета */
-    text-decoration: underline; /* Добавление подчеркивания */
-    font-weight: bold; /* Жирный шрифт */
-
-    transform: scale(1.1); /* Увеличение при наведении */
+    color: rgb(59, 59, 245); 
+    text-decoration: underline; 
+    font-weight: bold;
+    transform: scale(1.1); 
 }
+

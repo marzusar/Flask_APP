@@ -1,82 +1,64 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
+from dotenv import load_dotenv
 import psycopg2
 import random
 import os
 
+load_dotenv()
 
 
 app = Flask(__name__)
-# app.secret_key = os.environ["SECRET_KEY"]
-app.secret_key = '123bnasdjn234jinasd'
+app.secret_key = os.getenv('SECRET_KEY')
 
 # Функция подключения к базе данных
 def get_db_connection():
     
-    # conn = psycopg2.connect(
-    #     database=os.environ["POSTGRES_DB"],
-    #     user=os.environ["PGUSER"],
-    #     password=os.environ["PGPASSWORD"],
-    #     host=os.environ["PGHOST"],
-    #     port=os.environ["PGPORT"]
-        
-    # )
     conn = psycopg2.connect(
-        database='Tour',
-        user='postgres',
-        password='postgres',
-        host='localhost'        
+        database= os.getenv('POSTGRES_DB'),
+        user= os.getenv('PGUSER'),
+        password= os.getenv('PGPASSWORD'),
+        host= os.getenv('SECREPGHOSTT_KEY')
     )
     return conn
+
+def get_rand_object():
+    conn = get_db_connection()
+    curr = conn.cursor()
+    list = random.sample(range(1, 8), 4)
+    for i in range(4):
+        rand = list[i]
+        curr.execute(f"""
+                     select public.object.name_object, public.images.name_img, public.object.id  from public.object
+                     left join public.images on public.object.id_ing = public.images.id
+                     where public.object.id = {rand};
+                     """)    
+        list[i] = curr.fetchone()
+    conn.close()
+
+    return list 
+
+user_name=''
+user_id=''
+user_img=''
+objects = []
 
 # Вывод Главной страницы
 @app.route('/index', methods=['POST', 'GET'])
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    if request.method == 'POST':
-        
-        id = request.form['ID']
-        try:            
-            conn = get_db_connection()
-            curr = conn.cursor()
-        except Exception as ex:
-            print('[INFO] Error while working with PostgreSQl', ex)
-        list = []
-        for i in range(4):
-            rand = random.randint(1,7)
-            curr.execute(f"""
-                         select public.object.name_object, public.images.name_img from public.object
-                         left join public.images on public.object.id_ing = public.images.id
-                         where public.object.id = {rand};
-                         """)
-            list.insert(i, curr.fetchone())
-            print(list)
-            
+    global user_id, user_img, objects
+    id = user_id
+    img = user_img
+    print ("USER_ID = "+str(id)+", USER_IMG = "+ str(img) +".")
 
-        return render_template('index.html',objects=list, id=id)
-    else:
-        try:
-            conn = get_db_connection()
-            curr = conn.cursor()
-        except Exception as ex:
-            print('[INFO] Error while working with PostgreSQl', ex)
+    objects = get_rand_object()
 
-        list = []
-        for i in range(4):
-            rand = random.randint(1,7)
-            curr.execute(f"""
-                         select public.object.name_object, public.images.name_img from public.object
-                         left join public.images on public.object.id_ing = public.images.id
-                         where public.object.id = {rand};
-                         """)
-        
-            list.insert(i, curr.fetchone())
-            print(list)
-            print (list)
-    curr.close()
-    return render_template('index.html',objects=list)
+    return render_template('index.html',objects=objects, user_id=id, user_img=img)
+
 #Вевеод страницы Регистрации
 @app.route('/reg', methods=['POST', 'GET'])
 def reg():
+    global user_id, user_img, user_name
     if request.method == 'POST':
         try:
             conn = get_db_connection()
@@ -108,8 +90,10 @@ def reg():
             flash (" Такое имя  уже существует. ")
             return redirect(url_for("reg"))
         else:       
-           
-            cur.execute(f'''
+            user_name = select_name
+
+            # Добавление пользователя в базу данных
+            cur.execute(f''' 
                 INSERT INTO public."users" (user_name, user_password, user_phone, data_add, id_role)
                 VALUES ('{name}', '{password1}', {phone}, NOW(), 2);
             ''')
@@ -119,28 +103,22 @@ def reg():
             cur.execute(f"""
                 SELECT id FROM public."users" WHERE user_name = '{name}' AND user_password = '{password1}';
             """)
-            id = cur.fetchone()[0]
+            user_id = cur.fetchone()[0]
             
-
-            cur.execute(f'''select name_img from public."images" 
-                        left join public."users" on public."images".id = public."users".id_img
-                        where public."users".id = {id};''')
-            name_img = cur.fetchone()
-            if not name_img:
-                ava = 'default.webp'
-            elif name_img:
-                ava= name_img[0]
-                ava +='.webp'
+            user_img = 'default.webp'
             conn.close()
             conn.close()
 
-            return render_template("index.html", ava=ava, id=id)
+            objects = get_rand_object()
+
+            return render_template('index.html', objects=objects, user_img=user_img, user_id=user_id)
     else:
-        return render_template("reg.html")
+        return render_template('reg.html')
    
 #Вывод страници Авторизации
 @app.route('/aut', methods=['POST', 'GET'])
 def aut():
+    global user_id, user_img, user_name
     if request.method == 'POST':
         try:
             conn = get_db_connection()
@@ -159,73 +137,93 @@ def aut():
         SELECT id FROM public."users" 
         WHERE user_name = '{name}' AND user_password = '{password}';
         """) 
-        clear_id = cur.fetchone()
-        id = clear_id[0]
+        user_id = cur.fetchone()
 
-
-        if not id:
-            flash(f"Такого пользователя c таким именем или паролем не существует. Пожалуйста, проверте введённые данные или зарегестрируйтесь.{id}")
+        if not user_id:
+            flash(f"Такого пользователя c таким именем или паролем не существует. Пожалуйста, проверте введённые данные или зарегестрируйтесь.")
             return redirect(url_for("aut"))
         
         elif id:
+            user_name = name
+            user_id = user_id[0]
+
             cur.execute(f'''select name_img from public."images" 
                         left join public."users" on public."images".id = public."users".id_img
-                        where public."users".id = {id};''')
-            name_img = cur.fetchone()
-            if name_img:
-                ava = name_img[0]+'.webp'
-            elif not name_img:
-                ava = 'default.webp'
+                        where public."users".id = {user_id};''')
+            user_img = cur.fetchone()
+            if user_img:
+                user_img+=user_img[0]+'.webp'
+            elif not user_img:
+                user_img='default.webp'
             conn.close()
             conn.close()
 
-            return render_template("index.html", ava=ava, id=id)       
+            objects = get_rand_object()
+
+            return render_template("/index.html", objects=objects, user_img=user_img, user_id=user_id)       
     else:
         return render_template('aut.html')
 
 @app.route("/user", methods=['POST', 'GET'])
 def user():
-    if request.method == 'POST':
-        try:
-            conn = get_db_connection()
-            cur = conn.cursor()
-        except Exception as ex:
-            print('[INFO] Error while working with PostgreSQl', ex)
+    global user_id, user_img, user_name
+    id = user_id
+    img = user_img
+    name = user_name
+    print ("USER_ID = "+str(id)+", USER_IMG = "+ str(img) +".")
 
-        id = request.form['ID']
+    print('POST')
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+    except Exception as ex:
+        print('[INFO] Error while working with PostgreSQl', ex)
 
-        # Вывод названия изображения аватарки
-        cur.execute(f'''
-        select name_img from public."images"
-        join left public."users" on public."images".id = public."users".id_img
-        where public."users".id = {id};
-        ''')
-        clear_ava = cur.fetchone()
+    cur.execute(
+        f'''select data_add from public.users
+        where id = {id};'''
+    )
+    data_add = cur.fetchone()[0]
+    
+    return render_template('user.html', user_id = user_id, user_img=img, user_name=name, data_add=data_add,)
 
-        # Вывод имя пользователя
-        cur.execute(f'''
-        select user_name from public."users"
-        where id = {id};
-        ''')
-        user_name = cur.fetchone()
+@app.route("/object",methods=['POST', 'GET'])
+def object():
+    global user_id, user_img
+    id = user_id
+    img = user_img
 
-        # Вывод 
-        cur.execute(f'''
-        select data_add from public."users"
-        where id = {id};
-        ''')
-        data_add = cur.fetchone()
 
-        ava=clear_ava[0]
-        if ava:
-            ava+='.webp'
-        elif not ava:
-            ava = 'default.webp'
-        
-        return render_template('user.html',  id=id, ava=ava, clear_ava=clear_ava, user_name=user_name, data_add=data_add)
+    print('POST')
+    id_object = request.form['id_object']
+    print(id_object)
 
-    else:
-        return  render_template('user.html')
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+    except Exception as ex:
+        print('[INFO] Error while working with PostgreSQl', ex)
+
+    cur.execute(
+        f'''select * from public.desc
+        where id_object = {id_object}'''
+    )
+    desc = cur.fetchone()
+
+    return render_template("object.html", desc=desc, user_id = id, user_img=img,)
+
+
+
+@app.route("/exit", methods=['POST', 'GET'])
+def exit():
+    global user_id, user_img, user_name
+    user_id = ''
+    user_img = ''
+    user_name = ''
+
+    objects = get_rand_object()
+
+    return render_template('index.html', objects = objects)
 
 
 if __name__ == '__main__':
